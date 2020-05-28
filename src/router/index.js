@@ -26,7 +26,22 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../components/Threadshow.vue"),
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageThreadShow.vue"
+      ),
+    props: true,
+  },
+
+  {
+    path: "*",
+    name: "NotFound ",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageNotFound.vue"
+      ),
     props: true,
   },
 ];

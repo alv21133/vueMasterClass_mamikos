@@ -1,10 +1,11 @@
 <template>
   <div class="thread-list">
     <h2 class="list-title">Threads</h2>
-    <ThreadListItem    
-    v-for="thread in threads"
+    <ThreadListItem
+      v-for="(thread, ll) in threads"
       :thread="thread"
-      :key="thread[`.key`]"
+      :id="ll"
+      :key="ll"
     ></ThreadListItem>
   </div>
 </template>

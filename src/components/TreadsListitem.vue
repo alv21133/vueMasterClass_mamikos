@@ -2,7 +2,7 @@
   <div class="thread">
     <div>
       <p>
-        <router-link :to="`/thread/${thread}`">
+        <router-link :to="`/thread/${key[id]}`">
           {{ thread.title }}
         </router-link>
       </p>
@@ -14,9 +14,7 @@
 
     <div class="activity">
       <p class="replies-count">{{ repliesCount }} replies</p>
-
       <!--<img class="avatar-medium" src="http://i0.kym-cdn.com/photos/images/facebook/000/010/934/46623-batman_pikachu_super.png" alt="">-->
-
       <!--<div>-->
       <!--<p class="text-xsmall">-->
       <!--<a href="#">Bruce Wayne</a>-->
@@ -26,7 +24,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import sourceData from "@/data";
 export default {
@@ -36,6 +33,10 @@ export default {
       required: true,
       type: Object,
     },
+    id: {
+      required: true,
+      type: Number,
+    },
   },
 
   computed: {
@@ -44,6 +45,9 @@ export default {
     },
     user() {
       return sourceData.users[this.thread.userId];
+    },
+    key() {
+      return Object.keys(sourceData.threads);
     },
   },
 };
