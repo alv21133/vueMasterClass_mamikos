@@ -12,16 +12,15 @@
 
     <div class="post-content">
       <div>
-        {{ post.text }}
+        {{ posts.text }}
       </div>
     </div>
 
     <div class="post-date text-faded">
-      {{ post.publishedAt }}
+      {{ posts.publishedAt }}
     </div>
   </div>
 </template>
-
 <script>
 import sourceDate from "@/data";
 export default {
@@ -30,14 +29,13 @@ export default {
       required: true,
       type: Object,
     },
-    computed: {
-      user() {
-        return sourceDate.users[this.posts.userId];
-      },
-
-      userPostCount() {
-        Object.keys(this.user.posts).length;
-      },
+  },
+  computed: {
+    user() {
+      return sourceDate.users[this.posts.userId];
+    },
+    userPostCount() {
+      return Object.keys(this.user.posts).length;
     },
   },
 };

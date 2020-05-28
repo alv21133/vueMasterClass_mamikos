@@ -2,7 +2,7 @@
   <div class="threadsShow">
     <div class="col-large push-top">
       <h1 class="text-center">{{ thread.title }}</h1>
-      <PostList :posts="post"></PostList>
+      <PostList :posts="postUser"></PostList>
     </div>
   </div>
 </template>
@@ -29,9 +29,11 @@ export default {
   },
 
   computed: {
-    post() {
-      //const postIds = Object.values(this.thread.posts);
-      return Object.values(sourceData.posts['-KsjWehQ--apjDBwSBCZ']);
+    postUser() {
+      const postIds = Object.values(this.thread.posts);
+      return Object.values(sourceData.posts).filter((post) =>
+        postIds.includes(post[".key"])
+      );
     },
   },
 
