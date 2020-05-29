@@ -3,6 +3,7 @@
     <div class="col-large push-top">
       <h1 class="text-center">{{ thread.title }}</h1>
       <PostList :posts="postUser"></PostList>
+      <PostEditor @save="addPost" :threadId="id"></PostEditor>
     </div>
   </div>
 </template>
@@ -10,7 +11,14 @@
 <script>
 import sourceData from "@/data";
 import PostList from "@/components/PostList";
+import PostEditor from "@/components/PostEditor";
 export default {
+  data() {
+    return {
+      thread: sourceData.threads[this.id],
+      newPostTest: "",
+    };
+  },
   props: {
     id: {
       required: true,
@@ -20,12 +28,7 @@ export default {
 
   components: {
     PostList,
-  },
-
-  data() {
-    return {
-      thread: sourceData.threads[this.id],
-    };
+    PostEditor,
   },
 
   computed: {
@@ -36,9 +39,14 @@ export default {
       );
     },
   },
-
-  mounted() {
-    console.log(this.post);
+  methods: {
+    addPost(mypost) {
+      const post = mypost.post;
+      const postId = mypost.post[".key"];
+      this.$set(sourceData.posts, postId, post);
+      this.$set(this.thread.posts, postId, postId);
+      this.$set(sourceData.users[post.userId].posts, postId, postId);
+    },
   },
 };
 </script>
