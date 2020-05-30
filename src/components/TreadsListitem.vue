@@ -8,10 +8,9 @@
       </p>
       <p class="text-faded text-xsmall">
         By <a href="#">{{ user.name }}</a
-        >, {{ thread.publishedAt }}.
+        >,<AppDate :timestamp="thread.publishedAt"></AppDate> .
       </p>
     </div>
-
     <div class="activity">
       <p class="replies-count">{{ repliesCount }} replies</p>
       <!--<img class="avatar-medium" src="http://i0.kym-cdn.com/photos/images/facebook/000/010/934/46623-batman_pikachu_super.png" alt="">-->

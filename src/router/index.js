@@ -31,16 +31,30 @@ const routes = [
       ),
     props: true,
   },
-
   {
     path: "*",
     name: "NotFound ",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(
         /* webpackChunkName: "about" */ "../components/pages/PageNotFound.vue"
+      ),
+    props: true,
+  },
+  {
+    path: "/forum/:id",
+    name: "forum",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageForum.vue"
+      ),
+    props: true,
+  },
+  {
+    path: "/category/:id",
+    name: "category",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageCategory.vue"
       ),
     props: true,
   },
