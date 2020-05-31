@@ -58,6 +58,20 @@ const routes = [
       ),
     props: true,
   },
+  {
+    path: "/me",
+    name: "Profile",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../components/pages/PageProfile"),
+    props: true,
+  },
+  {
+    path: "/me/edit",
+    name: "ProfileEdit",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../components/pages/PageProfile"),
+    props: { edit: true },
+  },
 ];
 
 const router = new VueRouter({

@@ -12,22 +12,15 @@
         >
       </p>
       <PostList :posts="postUser"></PostList>
-      <PostEditor @save="addPost" :threadId="id"></PostEditor>
+      <PostEditor :threadId="id"></PostEditor>
     </div>
   </div>
 </template>
 
 <script>
-import sourceData from "@/data";
 import PostList from "@/components/PostList";
 import PostEditor from "@/components/PostEditor";
 export default {
-  data() {
-    return {
-      thread: sourceData.threads[this.id],
-      newPostTest: "",
-    };
-  },
   props: {
     id: {
       required: true,
@@ -41,23 +34,15 @@ export default {
   },
 
   computed: {
+    thread() {
+      return this.$store.state.threads[this.id];
+    },
     postUser() {
       const postIds = Object.values(this.thread.posts);
-      return Object.values(sourceData.posts).filter((post) =>
+      return Object.values(this.$store.state.posts).filter((post) =>
         postIds.includes(post[".key"])
       );
     },
   },
-  methods: {
-    addPost(mypost) {
-      const post = mypost.post;
-      const postId = mypost.post[".key"];
-      this.$set(sourceData.posts, postId, post);
-      this.$set(this.thread.posts, postId, postId);
-      this.$set(sourceData.users[post.userId].posts, postId, postId);
-    },
-  },
 };
 </script>
-
-<style></style>

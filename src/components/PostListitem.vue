@@ -23,7 +23,7 @@
 </template>
 <script>
 import sourceDate from "@/data";
-
+import { countObjectProperties } from "@/utils";
 export default {
   props: {
     posts: {
@@ -36,7 +36,7 @@ export default {
       return sourceDate.users[this.posts.userId];
     },
     userPostCount() {
-      return Object.keys(this.user.posts).length;
+      return countObjectProperties(this.user.posts);
     },
   },
 };

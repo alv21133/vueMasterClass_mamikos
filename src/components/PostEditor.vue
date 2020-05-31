@@ -28,19 +28,16 @@ export default {
   },
   methods: {
     save() {
-      console.log(this.text);
-
-      const postId = "greatpost" + Math.random();
       let post = {
         text: this.text,
         publishedAt: Math.floor(Date.now() / 100),
         threadId: this.threadId,
         userId: "jUjmgCurRRdzayqbRMO7aTG9X1G2",
-        ".key": postId,
       };
 
       this.text = "";
       this.$emit("save", { post });
+      this.$store.dispatch("createPost", post);
     },
   },
 };

@@ -12,7 +12,7 @@
 import ForumListItem from "./ForumListitem";
 export default {
   components: {
-    ForumListItem,
+    ForumListItem, 
   },
 
   props: {
