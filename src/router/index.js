@@ -21,13 +21,25 @@ const routes = [
   },
   {
     path: "/thread/:id",
-    name: "Threadshow ",
+    name: "ThreadShow",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(
         /* webpackChunkName: "about" */ "../components/pages/PageThreadShow.vue"
+      ),
+    props: true,
+  },
+  {
+    path: "/thread/create/:forumId",
+    name: "ThreadCreate",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageThreadCreate.vue"
       ),
     props: true,
   },
@@ -71,6 +83,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../components/pages/PageProfile"),
     props: { edit: true },
+  },
+  {
+    path: "/thread/:id/edit",
+    name: "ThreadEdit",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageThreadEdit"
+      ),
+    props: true,
   },
 ];
 

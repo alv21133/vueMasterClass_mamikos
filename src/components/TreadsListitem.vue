@@ -2,7 +2,7 @@
   <div class="thread">
     <div>
       <p>
-        <router-link :to="`/thread/${key[id]}`">
+        <router-link :to="`/thread/${thread['.key']}`">
           {{ thread.title }}
         </router-link>
       </p>
@@ -44,9 +44,6 @@ export default {
     },
     user() {
       return this.$store.state.users[this.thread.userId];
-    },
-    key() {
-      return Object.keys(this.$store.state.threads);
     },
   },
 };
