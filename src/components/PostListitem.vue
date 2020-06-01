@@ -11,12 +11,33 @@
     </div>
 
     <div class="post-content">
-      <div>
+      <div v-if="!editing">
         {{ posts.text }}
+      </div>
+      <template v-if="!editing">
+        <div>
+          {{ posts.text }}
+        </div>
+        <a
+          @click.prevent="editing = true"
+          href="#"
+          style="margin-left: auto;"
+          class="link-unstyled"
+          title="Make a change"
+          ><i class="fa fa-pencil"></i
+        ></a>
+      </template>
+      <div v-else>
+        <PostEditor
+          :post="posts"
+          @save="editing = false"
+          @cancel="editing = false"
+        />
       </div>
     </div>
 
     <div class="post-date text-faded">
+      <div v-if="posts.edited" class="edition-info">edited</div>
       <AppDate :timestamp="posts.publishedAt"></AppDate>
     </div>
   </div>
@@ -24,12 +45,22 @@
 <script>
 import sourceDate from "@/data";
 import { countObjectProperties } from "@/utils";
+import PostEditor from "./PostEditor";
 export default {
   props: {
     posts: {
       required: true,
       type: Object,
     },
+  },
+  components: {
+    PostEditor,
+  },
+
+  data() {
+    return {
+      editing: false,
+    };
   },
   computed: {
     user() {
