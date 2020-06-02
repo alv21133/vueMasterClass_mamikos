@@ -48,9 +48,13 @@ export default {
       return !!this.title;
     },
   },
+
   methods: {
     save() {
       this.$emit("save", { title: this.form.title, text: this.form.text });
+    },
+    cancel() {
+      this.$emit("cancel");
     },
   },
   props: {
@@ -62,10 +66,6 @@ export default {
       type: String,
       default: "",
     },
-  },
-
-  cancel() {
-    this.$emit("cancel");
   },
 };
 </script>

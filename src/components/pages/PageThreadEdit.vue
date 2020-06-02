@@ -62,10 +62,6 @@ export default {
       this.$router.push({ name: "ThreadShow", params: { id: this.id } });
     },
   },
-  mounted() {
-    console.log(this.id);
-    console.log(this.$store.state.threads);
-  },
 };
 </script>
 

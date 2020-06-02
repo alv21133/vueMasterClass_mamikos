@@ -8,7 +8,7 @@
       </p>
       <p class="text-faded text-xsmall">
         By <a href="#">{{ user.name }}</a
-        >,<AppDate :timestamp="thread.publishedAt"></AppDate> .
+        >,<AppDate :timestamp="thread.publishedAt"></AppDate>.
       </p>
     </div>
     <div class="activity">
@@ -24,7 +24,6 @@
   </div>
 </template>
 <script>
-import { countObjectProperties } from "@/utils";
 export default {
   name: "ThreadsListitem",
   props: {
@@ -40,7 +39,7 @@ export default {
 
   computed: {
     repliesCount() {
-      return countObjectProperties(this.thread.posts) - 1;
+      return this.$store.getters.threadRepliesCount(this.thread[".key"]);
     },
     user() {
       return this.$store.state.users[this.thread.userId];

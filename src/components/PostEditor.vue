@@ -9,7 +9,6 @@
       ></textarea>
     </div>
     <div class="form-actions">
-      <button class="btn-blue">Submit post</button>
       <button v-if="isUpdate" @click.prevent="cancel" class="btn btn-ghost">
         Cancel
       </button>

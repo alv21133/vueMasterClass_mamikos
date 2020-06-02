@@ -6,7 +6,7 @@
       <a href="#">
         <img class="avatar-large" :src="user.avatar" alt="user" />
       </a>
-
+      <p class="desktop-only text-small">{{ userThreadsCount }} threads</p>
       <p class="desktop-only text-small">{{ userPostCount }} posts</p>
     </div>
 
@@ -15,9 +15,6 @@
         {{ posts.text }}
       </div>
       <template v-if="!editing">
-        <div>
-          {{ posts.text }}
-        </div>
         <a
           @click.prevent="editing = true"
           href="#"
@@ -44,7 +41,6 @@
 </template>
 <script>
 import sourceDate from "@/data";
-import { countObjectProperties } from "@/utils";
 import PostEditor from "./PostEditor";
 export default {
   props: {
@@ -67,7 +63,10 @@ export default {
       return sourceDate.users[this.posts.userId];
     },
     userPostCount() {
-      return countObjectProperties(this.user.posts);
+      return this.$store.getters.userPostsCount(this.posts.userId);
+    },
+    userThreadsCount() {
+      return this.$store.getters.userThreadsCount(this.posts.userId);
     },
   },
 };
