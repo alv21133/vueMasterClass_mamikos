@@ -1,5 +1,5 @@
 <template>
-  <div class="col-full push-top">
+  <div v-if="forum" class="col-full push-top">
     <h1>
       Create new thread in <i>{{ forum.name }}</i>
     </h1>
@@ -9,6 +9,7 @@
 
 <script>
 import ThreadEditor from "@/components/ThreadEditor";
+import { mapActions } from "vuex";
 export default {
   props: {
     forumId: {
@@ -27,24 +28,26 @@ export default {
   },
 
   methods: {
+    ...mapActions(["createThread", "fetchForum"]),
     save({ title, text }) {
-      this.$store
-        .dispatch("createThread", {
-          forumId: this.forum[".key"],
-          title,
-          text,
-        })
-        .then((thread) => {
-          this.$router.push({
-            name: "ThreadShow",
-            params: { id: thread[".key"] },
-          });
+      this.createThread({
+        forumId: this.forum[".key"],
+        title,
+        text,
+      }).then((thread) => {
+        this.$router.push({
+          name: "ThreadShow",
+          params: { id: thread[".key"] },
         });
+      });
     },
 
     cancel() {
       this.$router.push({ name: "forum", params: { id: this.forum[".key"] } });
     },
+  },
+  created() {
+    this.fetchForum({ id: this.forumId });
   },
 };
 </script>
