@@ -93,6 +93,15 @@ const routes = [
       ),
     props: true,
   },
+  {
+    path: "/register",
+    name: "register",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/pages/PageRegister"
+      ),
+    props: true,
+  },
 ];
 
 const router = new VueRouter({

@@ -9,17 +9,23 @@ require("firebase/auth");
 Vue.component("AppDate", AppDate);
 Vue.config.productionTip = false;
 const firebaseConfig = {
-  apiKey: "AIzaSyB9zqJRtF14i1Y-TbqhJZusHEnecYf1pF0",
-  authDomain: "vue-school-forum-1cba2.firebaseapp.com",
-  databaseURL: "https://vue-school-forum-1cba2.firebaseio.com",
-  projectId: "vue-school-forum-1cba2",
-  storageBucket: "vue-school-forum-1cba2.appspot.com",
-  messagingSenderId: "523673221196",
-  appId: "1:523673221196:web:682c3d7922c417a94bdce9",
-  measurementId: "G-GT0PK7LSFR",
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGE_SENDER_ID,
+  appId: process.env.VUE_APP_FIREBASE_APP_ID,
+  measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    store.dispatch("fetchAuthUser");
+  }
+});
 
 new Vue({
   router,
