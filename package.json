@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "seed": "firebase database:set / src/data2.json"
+    "seed": "firebase database:set / src/data.json"
   },
   "dependencies": {
     "core-js": "^3.6.4",

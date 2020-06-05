@@ -1,6 +1,6 @@
 <template>
   <div class="threadsShow">
-    <div v-if="asyncDataStatus_ready" class="col-large push-top">
+    <div v-if="asyncDataStatus_ready && thread" class="col-large push-top">
       <h1>
         {{ thread.title }}
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="posts && user" class="post">
+  <div v-if="posts && user && userThreadsCount" class="post">
     <div class="user-info">
       <a href="#" class="user-name">{{ user.name }}</a>
 

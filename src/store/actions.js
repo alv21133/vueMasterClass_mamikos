@@ -113,10 +113,6 @@ export default {
       firebase
         .database()
         .ref("users")
-        .push().key;
-      firebase
-        .database()
-        .ref("users")
         .child(id)
         .set(user)
         .then(() => {
@@ -125,6 +121,7 @@ export default {
         });
     });
   },
+
   registerUserWithEmailAndPassword(
     { dispatch },
     { email, name, username, password, avatar = null }
@@ -141,6 +138,45 @@ export default {
           password,
           avatar,
         });
+      })
+      .then(() => dispatch("fetchAuthUser"));
+  },
+
+  signInWithEmailAndPassword(context, { email, password }) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  },
+
+  signInWithGoogle({ dispatch }) {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((data) => {
+        const user = data.user;
+        firebase
+          .database()
+          .ref("users")
+          .child(user.uid)
+          .once("value", (snapshot) => {
+            if (!snapshot.exists()) {
+              return dispatch("createUser", {
+                id: user.uid,
+                name: user.displayName,
+                email: user.email,
+                username: user.email,
+                avatar: user.photoURL,
+              }).then(() => dispatch("fetchAuthUser"));
+            }
+          });
+      });
+  },
+
+  signOut({ commit }) {
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        commit("setAuthId", null);
       });
   },
 
@@ -148,6 +184,7 @@ export default {
     return new Promise((resolve) => {
       const thread = state.threads[id];
       const post = state.posts[thread.firstPostId];
+
       const edited = {
         at: Math.floor(Date.now() / 1000),
         by: state.authId,
@@ -196,6 +233,27 @@ export default {
 
   updateUser({ commit }, user) {
     commit("setUser", { userId: user[".key"], user });
+  },
+
+  fetchAuthUser({ dispatch, commit }) {
+    const userId = firebase.auth().currentUser.uid;
+    return new Promise((resolve) => {
+      // check if user exists in the database
+      firebase
+        .database()
+        .ref("users")
+        .child(userId)
+        .once("value", (snapshot) => {
+          if (snapshot.exists()) {
+            return dispatch("fetchUser", { id: userId }).then((user) => {
+              commit("setAuthId", userId);
+              resolve(user);
+            });
+          } else {
+            resolve(null);
+          }
+        });
+    });
   },
 
   fetchCategory: ({ dispatch }, { id }) =>

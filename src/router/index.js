@@ -102,6 +102,13 @@ const routes = [
       ),
     props: true,
   },
+  {
+    path: "/signin",
+    name: "SignIn",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../components/pages/PageSignIn"),
+    props: true,
+  },
 ];
 
 const router = new VueRouter({
