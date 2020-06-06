@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -42,6 +43,7 @@ const routes = [
         /* webpackChunkName: "about" */ "../components/pages/PageThreadCreate.vue"
       ),
     props: true,
+    meta: { requiresAuth: true },
   },
   {
     path: "*",
@@ -76,6 +78,21 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../components/pages/PageProfile"),
     props: true,
+    beforeEnter(to, from, next) {
+      if (store.state.authId) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    },
+  },
+  {
+    path: "/logout",
+    name: "SignOut",
+    beforeEnter(to, from, next) {
+      store.dispatch("signOut").then(() => next({ name: "Home" }));
+    },
+    meta: { requiresAuth: true },
   },
   {
     path: "/me/edit",
@@ -83,6 +100,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../components/pages/PageProfile"),
     props: { edit: true },
+    meta: { requiresAuth: true },
   },
   {
     path: "/thread/:id/edit",
@@ -98,16 +116,17 @@ const routes = [
     name: "register",
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../components/pages/PageRegister"
+        /* webpackChunkName: "about" */"../components/pages/PageRegister"
       ),
-    props: true,
+    meta: { requiresGuest: true },
   },
   {
     path: "/signin",
     name: "SignIn",
     component: () =>
       import(/* webpackChunkName: "about" */ "../components/pages/PageSignIn"),
-    props: true,
+
+    meta: { requiresGuest: true },
   },
 ];
 
@@ -116,5 +135,26 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  console.log(`🚦 navigating to ${to.name} from ${from.name}`);
+  store.dispatch("auth/initAuthentication").then((user) => {
+    if (to.matched.some((route) => route.meta.requiresAuth)) {
+      // protected route
+      if (user) {
+        next();
+      } else {
+        next({ name: "SignIn", query: { redirectTo: to.path } });
+      }
+    } else if (to.matched.some((route) => route.meta.requiresGuest)) {
+      // protected route
+      if (!user) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    } else {
+      next();
+    }
+  });
+});
 export default router;

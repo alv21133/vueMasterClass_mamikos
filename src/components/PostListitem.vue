@@ -40,7 +40,6 @@
   </div>
 </template>
 <script>
-import sourceDate from "@/data";
 import PostEditor from "./PostEditor";
 export default {
   props: {
@@ -60,13 +59,13 @@ export default {
   },
   computed: {
     user() {
-      return sourceDate.users[this.posts.userId];
+      return this.$store.state.users.items[this.post.userId];
     },
     userPostCount() {
-      return this.$store.getters.userPostsCount(this.posts.userId);
+      return this.$store.getters["users/userPostsCount"](this.post.userId);
     },
     userThreadsCount() {
-      return this.$store.getters.userThreadsCount(this.posts.userId);
+      return this.$store.getters["users/userThreadsCount"](this.post.userId);
     },
   },
 };

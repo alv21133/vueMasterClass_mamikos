@@ -5,7 +5,10 @@ import router from "./router";
 import store from "./store";
 import AppDate from "@/components/AppDate";
 import firebase from "firebase";
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
 require("firebase/auth");
+
 Vue.component("AppDate", AppDate);
 Vue.config.productionTip = false;
 const firebaseConfig = {

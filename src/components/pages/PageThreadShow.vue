@@ -23,13 +23,25 @@
         >
       </p>
       <PostList :posts="postUser"></PostList>
-      <PostEditor :threadId="id"></PostEditor>
+      <PostEditor v-if="authUser" :threadId="id"></PostEditor>
+      <div v-else class="text-center" style="margin-bottom: 50px;">
+        <router-link
+          :to="{ name: 'SignIn', query: { redirectTo: $route.path } }"
+          >Sign in</router-link
+        >
+        or
+        <router-link
+          :to="{ name: 'Register', query: { redirectTo: $route.path } }"
+          >Register</router-link
+        >
+        to post a reply.
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import PostList from "@/components/PostList";
 import PostEditor from "@/components/PostEditor";
 import { countObjectProperties } from "@/utils";
@@ -49,14 +61,19 @@ export default {
 
   computed: {
     thread() {
-      return this.$store.state.threads[this.id];
+      return this.$store.state.threads.items[this.id];
     },
+    ...mapGetters({
+      authUser: "auth/authUser",
+    }),
 
     repliesCount() {
-      return this.$store.getters.threadRepliesCount(this.thread[".key"]);
+      return this.$store.getters["threads/threadRepliesCount"](
+        this.thread[".key"]
+      );
     },
     user() {
-      return this.$store.state.users[this.thread.userId];
+      return this.$store.state.users.items[this.thread.userId];
     },
 
     contributorsCount() {
@@ -65,13 +82,15 @@ export default {
 
     postUser() {
       const postIds = Object.values(this.thread.posts);
-      return Object.values(this.$store.state.posts).filter((post) =>
+      return Object.values(this.$store.state.posts.items).filter((post) =>
         postIds.includes(post[".key"])
       );
     },
   },
   methods: {
-    ...mapActions(["fetchThread", "fetchUser", "fetchPosts"]),
+    ...mapActions("threads", ["fetchThread"]),
+    ...mapActions("users", ["fetchUser"]),
+    ...mapActions("posts", ["fetchPosts"]),
   },
   created() {
     // fetch thread

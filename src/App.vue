@@ -2,7 +2,7 @@
   <div id="app">
     <TheNavbar />
     <div class="container">
-      <router-view v-show="showPage" @ready="pageReady" />
+      <router-view :key="$route.path" v-show="showPage" @ready="pageReady" />
       <spiner v-show="!showPage || showPage == false"></spiner>
     </div>
   </div>
@@ -43,10 +43,10 @@ export default {
 };
 </script>
 <style>
- @import "assets/css/style.css";
- @import "~nprogress/nprogress.css";
+@import "assets/css/style.css";
+@import "~nprogress/nprogress.css";
 
- #nprogress .bar {
-   background: #57AD8D;}
- </style>
-
+#nprogress .bar {
+  background: #57ad8d;
+}
+</style>
